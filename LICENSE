@@ -1,0 +1,39 @@
+MIT License
+
+Copyright (c) 2025 zhipin-screening contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 额外声明（使用前请阅读）
+
+本软件用于**自动化操作使用者本人已登录的 BOSS直聘（zhipin.com）账号**，
+以便把候选人信息整理成文本、交由使用者自己的 AI 做辅助筛选。
+
+使用者需自行确保其使用行为合法合规，包括但不限于：
+
+- 遵守 BOSS直聘的用户协议与 robots 规则；
+- 遵守《中华人民共和国个人信息保护法》《数据安全法》等法律法规，
+  对候选人个人信息的使用限于**告知-同意**的范围内；
+- 不将抓取结果用于未经授权的留存、转卖、对外提供或训练用途；
+- 控制访问频率，不对平台造成压力。
+
+本项目**不提供任何绕过登录、绕过权限或破解他人账号的能力**，也不包含
+任何候选人数据。作者不对使用者的使用行为承担任何责任。

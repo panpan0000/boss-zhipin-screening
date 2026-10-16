@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zhipin-screening"
+version = "0.1.0"
+description = "把 BOSS直聘「推荐牛人」变成给 LLM 的简历筛选载荷"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+keywords = ["recruiting", "resume-screening", "llm", "cdp", "zhipin"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Topic :: Office/Business",
+]
+# 核心零依赖：只用标准库。Excel 导出才需要 openpyxl。
+dependencies = []
+
+[project.optional-dependencies]
+excel = ["openpyxl>=3.0"]
+dev = ["ruff"]
+
+[project.scripts]
+zhipin-screening = "zhipin_screening.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = ["E501"]

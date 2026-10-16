@@ -1,0 +1,35 @@
+# 抓取产物 —— 含真实候选人个人信息，**绝不入库**
+out/
+*.payload.json
+payload*.json
+candidates*.json
+candidates*.csv
+candidates*.xlsx
+candidates*.md
+details*.json
+list*.json
+pick*.json
+screen*.json
+*.resume.txt
+
+# 凭据 / 会话（Cookie、profile 副本绝不能提交）
+*.cookie
+*.cookies
+profile/
+chrome-profile/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# 编辑器 / 系统
+.DS_Store
+.idea/
+.vscode/
