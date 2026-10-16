@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""纯标准库的 Chrome DevTools Protocol 客户端：连上已开调试端口的 Chrome，
-把指定页面的可见文本 / HTML 抓出来。
+"""纯标准库的 Chrome DevTools Protocol 客户端。
 
-用法:
-    python3 cdp_dump.py --port 9222 --url-match zhipin.com --mode text
-    python3 cdp_dump.py --port 9222 --url-match zhipin.com --mode html --out page.html
-    python3 cdp_dump.py --port 9222 --url-match zhipin.com --mode links
+只用标准库实现（含 WebSocket 分帧），不依赖 websocket-client /
+Playwright / Selenium —— 这是本项目核心零依赖的原因。
+
+对上层暴露：
+    http_json(path, port)      探测调试端口、列出标签页
+    pick_target(port, match)   按 URL 子串挑标签页，挑不到回退到第一个 page
+    WS                         最小可用的 WebSocket（文本帧 / 分片 / 掩码）
+    CDP                        命令往返 + Runtime.evaluate
+
+本模块不感知任何具体站点，可以脱离本项目单独使用：
+只要能开调试端口，就能读任意页面的 DOM 文本。
 """
 import base64
 import json

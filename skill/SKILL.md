@@ -9,7 +9,7 @@ description: >
   注意：本 skill 用于**辅助人做筛选判断**，不是数据采集/存档工具。
 ---
 
-# BOSS直聘 AI 简历筛选
+# 招聘简历 AI 筛选
 
 把「推荐牛人」页面上的候选人变成一份带简历正文的 JSON，交给 LLM 输出
 匹配度评分、优势、疑点、是否建议沟通。**判断由 AI 做，决策由人做。**
@@ -34,7 +34,7 @@ Chrome 实例。
   --no-first-run --no-default-browser-check
 ```
 
-然后**用户必须在那个窗口里登录 BOSS直聘**，并停在
+然后**用户必须在那个窗口里登录目标招聘平台**，并停在
 `https://www.zhipin.com/web/chat/recommend`。
 
 ### 两个坑，不踩会白折腾

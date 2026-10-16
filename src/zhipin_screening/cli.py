@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BOSS直聘「推荐牛人」抓取工具链 —— 统一入口，面向 agent 复用。
+"""推荐牛人列表 → LLM 简历筛选载荷：统一入口，面向 agent 复用。
 
 设计原则：
   * 每个子命令都能把**纯 JSON 打到 stdout**（--stdout），方便其他 agent 解析
@@ -8,12 +8,12 @@
   * 只依赖 Python 标准库；导出 Excel 才需要 openpyxl
 
 子命令：
-  doctor     环境自检（调试端口 / 登录态 / 推荐页 iframe）—— agent 应先跑这个
+  doctor     环境自检（调试端口 / 登录态 / 列表页 iframe）—— agent 应先跑这个
   list       抓推荐候选人清单
   shortlist  按条件从清单里筛"合适的人"
-  detail     抓指定候选人的简历详情（破解 canvas 渲染）
+  detail     抓指定候选人的简历详情（绕过 canvas 渲染）
   screen     汇总成一份喂给 AI 筛选的载荷
-  xlsx       导出 Excel
+  export     可选：导出 Excel / Markdown
 
 典型 agent 用法：
   python3 zhipin.py doctor --stdout
@@ -24,15 +24,18 @@
 """
 import argparse
 import json
-import os
 import sys
 import time
 
-
-from .cdp import CDP, pick_target, http_json           # noqa: E402
+from .cdp import CDP, pick_target, http_json
 
 DEFAULT_PORT = 9222
-RECOMMEND_URL = "https://www.zhipin.com/web/chat/recommend"
+
+# ---- 目标站点相关的字面量集中在这里 -------------------------------
+# 换平台时只需要改这一段（页面结构差异仍需改 list_page / detail_page）。
+SITE_HOST = "zhipin.com"
+RECOMMEND_URL = f"https://www.{SITE_HOST}/web/chat/recommend"
+
 
 
 # ------------------------------------------------------------------ 通用工具
@@ -64,9 +67,9 @@ def connect(port):
         raise Fail("NO_DEBUG_PORT",
                    f"连不上 127.0.0.1:{port} 的 Chrome 调试端口",
                    "需要用带 --remote-debugging-port 的独立实例启动 Chrome，见 README")
-    target, _ = pick_target(port, "zhipin.com")
+    target, _ = pick_target(port, SITE_HOST)
     if not target:
-        raise Fail("NO_ZHIPIN_TAB", "没找到 zhipin.com 的标签页",
+        raise Fail("NO_SITE_TAB", f"没找到 {SITE_HOST} 的标签页",
                    f"在受控 Chrome 里打开 {RECOMMEND_URL} 并登录")
     cdp = CDP(target["webSocketDebuggerUrl"], timeout=60)
     cdp.call("Page.enable")
@@ -111,11 +114,11 @@ def cmd_doctor(args):
         r["error"] = {"code": "LIST_FAILED", "message": str(e)}
         emit(r, args.stdout, args.out)
         return 1
-    zp = [t for t in pages if "zhipin.com" in (t.get("url") or "")]
-    r["checks"]["zhipin_tab"] = {"ok": bool(zp), "url": zp[0]["url"] if zp else None,
+    zp = [t for t in pages if SITE_HOST in (t.get("url") or "")]
+    r["checks"]["site_tab"] = {"ok": bool(zp), "url": zp[0]["url"] if zp else None,
                                  "all_tabs": [t.get("url") for t in pages][:8]}
     if not zp:
-        r["error"] = {"code": "NO_ZHIPIN_TAB", "message": "没有 zhipin.com 标签页",
+        r["error"] = {"code": "NO_SITE_TAB", "message": f"没有 {SITE_HOST} 标签页",
                       "hint": f"在受控 Chrome 里打开 {RECOMMEND_URL}"}
         emit(r, args.stdout, args.out)
         return 1
@@ -352,7 +355,7 @@ def cmd_screen(args):
         "ok": True,
         "task": "screen_resumes",
         "instruction": (
-            "你是招聘助手。下面是 BOSS直聘 候选人的结构化信息与简历正文。"
+            "你是招聘助手。下面是候选人的结构化信息与简历正文。"
             "请对每位候选人输出：1) 匹配度评分(0-100) 2) 3 条关键优势 3) 风险/疑点 "
             "4) 是否建议发起沟通(是/否) 5) 若建议，给一句打招呼话术。"
             "必须以 JSON 数组返回，字段: no, name, score, strengths[], concerns[], "
@@ -375,7 +378,7 @@ def cmd_xlsx(args):
     cards, dropped, dedup = clean(data.get("cards", []))
     for i, c in enumerate(cards, 1):
         c["idx"] = i
-    out_x = args.out or "zhipin_candidates.xlsx"
+    out_x = args.out or "candidates.xlsx"
     build_xlsx(cards, out_x)
     if args.md:
         open(args.md, "w", encoding="utf-8").write(build_md(data, cards))

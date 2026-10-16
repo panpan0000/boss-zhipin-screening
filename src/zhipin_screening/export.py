@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""把 zhipin_extract.py 抓到的原始 JSON 清洗成最终交付物。
+"""把列表数据渲染成 Markdown / Excel（可选功能，非主流程）。
 
-清洗动作：
-  1. 剔除混在列表里的 VIP 推广卡片（无名无优势）
-  2. 按 (姓名, 年龄, 薪资) 去重 —— 无限滚动会重复渲染
-  3. 输出 clean JSON / Markdown / Excel（含统计 sheet）
+清洗与去重逻辑在 filters.clean_cards()，本模块只负责渲染。
+主流程请用 `run` 子命令 —— 它的产物是给 LLM 的筛选载荷，不是这些存档。
 
-用法:
-    python3 build_outputs.py zhipin_candidates.json --prefix zhipin_candidates
+入口见 cli.py 的 export 子命令。
 """
 import json
 import re
@@ -30,7 +27,7 @@ def salary_mid(s):
 
 
 def build_md(data, cards):
-    L = [f"# BOSS直聘 推荐牛人\n",
+    L = [f"# 推荐牛人\n",
          f"- 目标职位: **{data.get('job_title') or '(页面未显示)'}**",
          f"- 候选人数: **{len(cards)}**",
          f"- 抓取时间: {time.strftime('%Y-%m-%d %H:%M:%S')}\n",

@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "zhipin-screening"
 version = "0.1.0"
-description = "把 BOSS直聘「推荐牛人」变成给 LLM 的简历筛选载荷"
+description = "把招聘平台的推荐候选人列表变成给 LLM 的简历筛选载荷"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { text = "MIT" }
-keywords = ["recruiting", "resume-screening", "llm", "cdp", "zhipin"]
+keywords = ["recruiting", "resume-screening", "llm", "cdp", "web-automation"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

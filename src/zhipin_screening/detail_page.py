@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""提取 BOSS直聘 候选人**详情页**内容。
+"""提取候选人**详情页**内容。
 
 背景：详情页反爬有三层 ——
   1. 接口 /wapi/zpjob/view/geek/info/v2 的 zpData.encryptGeekDetailInfo 是**加密**的
@@ -14,10 +14,7 @@ canvas 的 CSS transform: translateY(T) 给出滚动偏移 → 绝对 y = T + �
 坑：每次点开候选人都会**新建一个 c-resume iframe 并堆叠**（不是复用），
 所以必须把补丁打到所有 iframe，而读写只针对**最后一个**（即当前候选人）。
 
-用法:
-    python3 zhipin_detail.py --pick 1,2,3
-    python3 zhipin_detail.py --shortlist --limit 5
-    python3 zhipin_detail.py --pick 1 --debug
+入口见 cli.py 的 detail / run 子命令。
 """
 import json
 import re

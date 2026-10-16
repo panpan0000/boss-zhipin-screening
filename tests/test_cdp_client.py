@@ -100,7 +100,7 @@ def _handle(conn):
         if path == "/json/list":
             body = json.dumps([{
                 "type": "page",
-                "title": "BOSS直聘 - 推荐",
+                "title": "推荐 - 测试夹具",
                 "url": "https://www.zhipin.com/web/chat/recommend",
                 "webSocketDebuggerUrl": f"ws://{HOST}:{PORT}/devtools/page/FAKE1",
             }]).encode()

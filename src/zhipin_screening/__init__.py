@@ -1,4 +1,4 @@
-"""zhipin-screening —— 把 BOSS直聘「推荐牛人」变成给 LLM 的简历筛选载荷。
+"""zhipin-screening —— 把招聘平台的「推荐牛人」列表变成给 LLM 的简历筛选载荷。
 
 分层：
     cdp.py          Chrome DevTools Protocol 客户端（纯标准库）

@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""从 BOSS直聘「推荐牛人」页面提取候选人卡片。
+"""从「推荐牛人」列表页提取候选人卡片。
 
 要点：推荐列表不在主文档里，而在同源 iframe `/web/frame/recommend/` 内，
 所以必须先穿透 iframe 才能读到卡片。列表是懒加载的，需要滚动才会出更多。
 
-用法:
-    python3 zhipin_extract.py                 # 抓取并写 json + md
-    python3 zhipin_extract.py --port 9222
-    python3 zhipin_extract.py --no-scroll     # 只抓当前已渲染的
+入口见 cli.py 的 list / run 子命令。
 """
 import json
 import sys
